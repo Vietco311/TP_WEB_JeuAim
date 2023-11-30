@@ -2,8 +2,8 @@ function createRandomPoint() {
     const point = document.createElement('div');
     point.classList.add('point');
     const container = document.getElementById('container');
-    const maxTop = container.clientHeight - 400;
-    const maxLeft = container.clientWidth - 400;
+    const maxTop = container.clientHeight;
+    const maxLeft = container.clientWidth;
 
     const randomTop = Math.floor(Math.random() * maxTop);
     const randomLeft = Math.floor(Math.random() * maxLeft);
