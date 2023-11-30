@@ -2,8 +2,8 @@ function createRandomPoint() {
     const point = document.createElement('div');
     point.classList.add('point');
     const container = document.getElementById('container');
-    const maxTop = container.clientHeight;
-    const maxLeft = container.clientWidth;
+    const maxTop = container.clientHeight - 200;
+    const maxLeft = container.clientWidth - 200;
 
     const randomTop = Math.floor(Math.random() * maxTop);
     const randomLeft = Math.floor(Math.random() * maxLeft);
@@ -15,7 +15,7 @@ function createRandomPoint() {
 
     setTimeout(() => {
       container.removeChild(point);
-    }, 3000); // Temps en millisecondes avant la disparition (ici, 3 secondes)
+    }, 3000);
   }
 
-  setInterval(createRandomPoint, 1000); // Créer un point toutes les secondes (ajustable)
+  setInterval(createRandomPoint, 1000);
