@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/index.css">
+</head>
+<body>
+    <div id="bande_titre">
+        <div id="user">
+            <span id="connecte"></span>
+            <span id="record">record:</span>
+        </div>
+        
+        <span id="score">0</span>
+        <div id="titre_bouton">
+          <h1>Jeu d'aim</h1>
+          <button id="begin">Commencer</button>
+        </div>          
+        <span id="chrono">00:00</span>
+    </div>
+    <div id="container"></div>
+
+    <script src="../javascript/jeu.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const message = urlParams.get('message');
+        document.addEventListener("DOMContentLoaded", () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const message = urlParams.get('message');
+
+            if (message) {
+                console.log('Contenu du message :', message); // Vérifiez le contenu du message dans la console
+                const split = decodeURIComponent(message).split(' ');
+                const pseudo = split[0];
+                const record = split[1];    
+                const connectedElement = document.querySelector('#connecte');
+                const recordElement = document.querySelector('#record');
+                if (connectedElement) {
+                    connectedElement.innerHTML = pseudo;
+                    recordElement.innerHTML = recordElement.innerHTML + record;
+                } else {
+                    console.error('L\'élément connecte n\'existe pas dans le DOM.');
+                    }
+            } else {
+            console.log('Aucun paramètre message trouvé dans l\'URL.');
+            }
+        });
+    </script>
+</body>
+</html>

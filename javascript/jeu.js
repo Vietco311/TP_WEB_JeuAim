@@ -1,6 +1,9 @@
 const button = document.querySelector("#begin");
 const score = document.querySelector("#score");
 const chrono = document.querySelector("#chrono");
+const pseudo = document.querySelector("#connecte");
+const container = document.querySelector('#container');
+const recordText = document.querySelector("#record");
 
 let seconds = 0;
 let minutes = 0;
@@ -8,18 +11,11 @@ let minutes = 0;
 let IntervalGame;
 let IntervalTimer;
 
-function resetTimer() {
-  clearInterval(timerInterval);
-  seconds = 0;
-  minutes = 0;
-  chrono.innerHTML = "00:00";
-}
 
 function updateScore(point) {
   point.addEventListener("click", (e) => {
     let intScore = parseInt(score.innerHTML);
     intScore++;
-    console.log(intScore, toString(intScore));
     score.innerHTML = intScore;
     point.remove();
   })
@@ -41,7 +37,7 @@ function formatTime(time) {
 }
 
 function resetTimer() {
-  clearInterval(timerInterval);
+  clearInterval(IntervalTimer);
   seconds = 0;
   minutes = 0;
   chrono.innerHTML = "00:00";
@@ -50,7 +46,6 @@ function resetTimer() {
 function createRandomPoint() {
     const point = document.createElement('div');
     point.classList.add('point');
-    const container = document.getElementById('container');
     const maxTop = container.clientHeight - 200;
     const maxLeft = container.clientWidth - 200;
 
@@ -65,19 +60,50 @@ function createRandomPoint() {
     updateScore(point);
     setTimeout(() => {
       container.removeChild(point);
-    }, 3000);
+    }, 2000);
 }
 
 
 
 button.addEventListener("click", (event) => {
-  IntervalGame = setInterval(createRandomPoint, 1000);
+  IntervalGame = setInterval(createRandomPoint, 750);
   IntervalTimer = setInterval(updateTimer, 1000);
   setTimeout(() => {
+    while (container.firstChild) {
+      container.removeChild(container.firstChild);
+    }
+    const dataToSend = {
+      pseudo: pseudo.innerHTML,
+      score: score.innerHTML
+    };
     clearInterval(IntervalGame);
     resetTimer();
-    score.textContent = 0;
-  },60000);
+    const recordSplit = recordText.innerHTML.split(":");
+    const record = recordSplit[1];
+    if(parseInt(score.innerHTML) > record){
+      recordSplit[1] = score.innerHTML;
+      recordText.innerHTML = recordSplit.join(":");
+    }
+    score.textContent = 0;   
+    // Envoi des données via fetch
+    console.log(dataToSend);
+    fetch('../php/sendScore.php', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(dataToSend)
+    })
+    .then(response => {
+      // Traitez la réponse du serveur ici si nécessaire
+      console.log('Réponse du serveur:', response);
+    })
+    .catch(error => {
+      // Gestion des erreurs
+      console.error('Erreur lors de l\'envoi des données:', error);
+    });
+     
+  },12000);
 });
 
 
